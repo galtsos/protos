@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "entities.proto";
+
+service SymbolApi {
+    rpc GetSymbolsList(google.protobuf.Empty) returns (GetSymbolsListOut);
+}
+
+message GetSymbolsListOut {
+    repeated Symbol symbols = 1;
+}

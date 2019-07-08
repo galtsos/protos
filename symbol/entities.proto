@@ -2,6 +2,26 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 
+message Asset {
+    int32 id = 1;
+    string tag = 2;
+    google.protobuf.Timestamp create_time = 3;
+    google.protobuf.Timestamp delete_time = 4;
+    string name = 5;
+    int32 precision = 6;
+
+    bool is_transferable = 50;
+}
+
+message Symbol {
+    int32 id = 1;
+    string tag = 2;
+    google.protobuf.Timestamp create_time = 3;
+    google.protobuf.Timestamp delete_time = 4;
+    Asset base_asset = 5;
+    Asset quote_asset = 6;
+}
+
 message Exchange {
     int32 id = 1;
     string tag = 2;
@@ -15,24 +35,4 @@ message Market {
     Symbol symbol = 3;
     google.protobuf.Timestamp create_time = 4;
     google.protobuf.Timestamp delete_time = 5;
-}
-
-message Symbol {
-    int32 id = 1;
-    string tag = 2;
-    google.protobuf.Timestamp create_time = 3;
-    google.protobuf.Timestamp delete_time = 4;
-    Asset base_asset = 5;
-    Asset quote_asset = 6;
-}
-
-message Asset {
-    int32 id = 1;
-    string tag = 2;
-    google.protobuf.Timestamp create_time = 3;
-    google.protobuf.Timestamp delete_time = 4;
-    string name = 5;
-    int32 precision = 6;
-
-    bool is_transferable = 50;
 }

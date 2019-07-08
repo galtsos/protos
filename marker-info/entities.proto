@@ -37,3 +37,8 @@ message Market {
     google.protobuf.Timestamp create_time = 4;
     google.protobuf.Timestamp delete_time = 5;
 }
+
+message MarketTag {
+    string exchange_tag = 1;
+    string symbol_tag = 2;
+}

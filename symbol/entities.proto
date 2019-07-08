@@ -9,7 +9,6 @@ message Asset {
     google.protobuf.Timestamp delete_time = 4;
     string name = 5;
     int32 precision = 6;
-
     bool is_transferable = 50;
 }
 
@@ -27,6 +26,8 @@ message Exchange {
     string tag = 2;
     google.protobuf.Timestamp create_time = 3;
     google.protobuf.Timestamp delete_time = 4;
+    string name = 5;
+    string site = 6;
 }
 
 message Market {

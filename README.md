@@ -32,7 +32,7 @@ RUN mkdir /root/.ssh
 # Put here SSH keys to access protos repo on Bitbucket
 COPY ssh-keys/* /root/.ssh/
 
-ARG PROTOS_BRANCH
+ARG PROTOS_BRANCH=master
 
 RUN set -e; \
     chmod 600 /root/.ssh/*; \
@@ -78,10 +78,30 @@ RUN set -e; \
 В результат выполнения этих наборов инструкций в директории `/var/app/src` будут находиться поддиректории с именами веб-сервисов, например `market-info`, в которых будут находиться только `pb2`-файлы:
 
 ```
-/var/app/src# ls -aR
+/var/app/src# ls -R
 .:
 Pipfile  Pipfile.lock  market_info
 
 ./market_info:
 api_pb2.py  api_pb2_grpc.py  entities_pb2.py
 ```
+
+## Процесс разработки приложений
+
+При разработке приложения может быть удобно получить сгенерированные файлы клиента и сервера из образа на локальный диск разработчика. Воспользуйтесь командами:
+
+```shell script
+cd $LOCAL_SERVICE_DIR/src/
+docker run -d --rm $IMAGE bash -c 'sleep 3600' # There will be a container hash in the output
+docker cp $HASH:/var/app/src/market_info - | tar -x # Repeat for another pathes of web-services
+docker kill $HASH
+```
+
+Добавьте эти маски в `.gitignore`, чтобы случайне не закоммитить сгенерированные файлы в репозиторий приложения:
+
+```gitignore
+*_pb2.py
+*_pb2_grpc.py
+```
+
+В указанных выше инструкциях сборки образа есть комментарий, как использовать локальные `.proto`-файлы вместо хранящихся в репозитории `protos`.

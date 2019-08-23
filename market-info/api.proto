@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "market-info/entities.proto";
+
+service MarketInfoApi {
+    rpc GetSymbolsList(google.protobuf.Empty) returns (GetSymbolsListOut);
+}
+
+message GetSymbolsListOut {
+    repeated Symbol symbols = 1;
+}

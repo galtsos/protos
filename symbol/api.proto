@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+
+service SymbolService {
+    rpc GetAssetsList(google.protobuf.Empty) returns (GetAssetsListOut);
+    rpc GetSymbolsList(google.protobuf.Empty) returns (GetSymbolsListOut);
+    rpc GetMarketsList(google.protobuf.Empty) returns (GetMarketsListOut);
+}
+
+message GetAssetsListOut {
+    repeated Asset assets = 1;
+}
+message GetSymbolsListOut {
+    repeated Symbol symbols = 1;
+}
+message GetMarketsListOut {
+    repeated Market markets = 1;
+}
+message Asset {
+    int32 id = 1;
+    string tag = 2;
+    int32 precision = 3;
+    google.protobuf.Timestamp create_time = 4;
+    google.protobuf.Timestamp delete_time = 5;
+}
+message Symbol {
+    int32 id = 1;
+    string tag = 2;
+    int32 base_asset_id = 3;
+    int32 quote_asset_id = 4;
+    google.protobuf.Timestamp create_time = 5;
+    google.protobuf.Timestamp delete_time = 6;
+}
+message Market {
+    int32 id = 1;
+    string exchange = 2;
+    int32 symbol_id = 3;
+    string trade_endpoint = 4;
+    google.protobuf.Timestamp create_time = 5;
+    google.protobuf.Timestamp delete_time = 6;
+}

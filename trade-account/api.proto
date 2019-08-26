@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+/*
+type for money is string
+type for time is 'google/protobuf/timestamp.proto'
+*/
+
+service TradeAccount {
+    rpc CreateCurrency (CreateCurrencyIn) returns (CreateCurrencyOut);
+    rpc DeleteCurrencyByTag (DeleteCurrencyByTagIn) returns (BoolResult);
+    rpc DeleteCurrencyById (DeleteCurrencyByIdIn) returns (BoolResult);
+    rpc GetCurrencyByTag (GetCurrencyByTagIn) returns (Currency);
+    rpc GetCurrencyById (GetCurrencyByIdIn) returns (Currency);
+    rpc GetCurrencies (GetCurrenciesIn) returns (Currencies);
+    rpc GetAccount (GetAccountIn) returns (Account);
+    rpc GetAccounts (GetAccountsIn) returns (Accounts);
+    rpc CreateAccount (CreateAccountIn) returns (AccountId);
+    rpc DeleteAccount (AccountId) returns (BoolResult);
+    rpc DepositToAccount (DepositToAccountIn) returns (RecordId);
+    rpc WithdrawFromAccount (WithdrawFromAccountIn) returns (RecordId);
+    rpc GetAccountBalanceHistory (GetAccountBalanceHistoryIn) returns (GetAccountBalanceHistoryOut);
+    rpc SubscribeToBalanceChange (AccountSubscriberIn) returns (stream BalanceChangeOut);
+    rpc StartSession (google.protobuf.Empty) returns (SessionHash);
+    rpc FinishSession (SessionHash) returns (BoolResult);
+    rpc Freeze (FreezeIn) returns (BoolResult);
+    rpc Unfreeze (UnfreezeIn) returns (BoolResult);
+    rpc RegisterDeal (RegisterDealIn) returns (BoolResult);
+}
+
+message GetAccountsIn {
+    int32 user_id = 1;
+    bool include_deleted = 2;
+}
+message SessionHash {
+    string session_hash = 1;
+}
+message BoolResult {
+    bool result = 1;
+}
+message AccountSubscriberIn {
+    string session_hash = 1;
+    repeated int32 account_id_list = 2;
+}
+message AccountId {
+    int32 account_id = 1;
+}
+message BalanceChangeOut {
+    int64 counter = 1;
+    int64 counter_prev = 2;
+    BalanceHistoryRecord record = 3;
+}
+message RecordId {
+    int32 id = 1;
+}
+message DeleteCurrencyByTagIn {
+    string tag = 1;
+}
+message DeleteCurrencyByIdIn {
+    int32 id = 1;
+}
+message CreateCurrencyIn {
+    string tag = 1;
+    int32 precision = 2;
+}
+message CreateCurrencyOut {
+    int32 id = 1;
+}
+message GetCurrencyByTagIn {
+    string tag = 1;
+    bool include_deleted = 2;
+}
+message GetCurrencyByIdIn {
+    int32 id = 1;
+    bool include_deleted = 2;
+}
+message GetCurrenciesIn {
+    bool include_deleted = 1;
+}
+message Currencies {
+    repeated Currency currencies = 1;
+}
+message Currency {
+    int32 id = 1;
+    string tag = 2;
+    int32 precision = 3;
+    google.protobuf.Timestamp creating_time = 4;
+    google.protobuf.Timestamp deleting_time = 5;
+}
+enum AccountType {
+    DEMO = 0;
+    REAL = 1;
+}
+message Account {
+    int32 id = 1;
+    string num = 2;
+    AccountType type = 3;
+    int32 leverage = 4;
+    google.protobuf.Timestamp creating_time = 5;
+    google.protobuf.Timestamp deleting_time = 6;
+    int32 currency_id = 7;
+    int32 user_id = 8;
+}
+message Accounts {
+    repeated Account accounts = 1;
+}
+message GetAccountIn {
+    int32 id = 1;
+    bool include_deleted = 2;
+}
+message CreateAccountIn {
+    int32 user_id = 1;
+    int32 currency_id = 2;
+    AccountType type = 3;
+    int32 leverage = 5;
+}
+message DepositToAccountIn {
+    int32 id = 1;
+    string amount = 2;
+    string initiator = 3;
+    string reason = 4;
+}
+message WithdrawFromAccountIn {
+    int32 id = 1;
+    string amount = 2;
+    string initiator = 3;
+    string reason = 4;
+}
+message GetAccountBalanceHistoryIn {
+    int32 id = 1;
+    google.protobuf.Timestamp time_from = 2;
+    google.protobuf.Timestamp time_to = 3;
+}
+message GetAccountBalanceHistoryOut {
+    repeated BalanceHistoryRecord records = 1;
+}
+message BalanceHistoryRecord {
+    int32 id = 1;
+    google.protobuf.Timestamp event_time = 2;
+    string operation = 3;
+    string amount = 4;
+    int32 account_id = 5;
+    string initiator = 6;
+    string reason = 7;
+}
+message FreezeIn {
+    int32 account_id = 1;
+    string amount = 2;
+    int32 deal_id = 3;
+}
+message UnfreezeIn {
+    int32 deal_id = 1;
+}
+message RegisterDealIn {
+    int32 deal_id = 1;
+    int32 payment_account_id = 2;
+    string payment_amount = 3;
+    int32 receiver_account_id = 4;
+    string received_amount = 5;
+}

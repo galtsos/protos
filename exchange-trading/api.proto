@@ -15,12 +15,15 @@ message TradeIn {
     Deal.Side side = 3;
     string volume = 4;
 }
+
 message TradeOut {
     TradeError error = 1;
 }
+
 message CheckTradeStatusIn {
     int32 deal_id = 1;
 }
+
 message CheckTradeStatusOut {
     oneof trade_result {
         TradeInProgress in_progress = 1;

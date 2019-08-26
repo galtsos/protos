@@ -12,9 +12,11 @@ service SymbolService {
 message GetAssetsListOut {
     repeated Asset assets = 1;
 }
+
 message GetSymbolsListOut {
     repeated Symbol symbols = 1;
 }
+
 message GetMarketsListOut {
     repeated Market markets = 1;
 }

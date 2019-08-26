@@ -30,83 +30,103 @@ message GetAccountsIn {
     int32 user_id = 1;
     bool include_deleted = 2;
 }
+
 message AccountSubscriberIn {
     string session_hash = 1;
     repeated int32 account_id_list = 2;
 }
+
 message AccountId {
     int32 account_id = 1;
 }
+
 message BalanceChangeOut {
     int64 counter = 1;
     int64 counter_prev = 2;
     BalanceHistoryRecord record = 3;
 }
+
 message RecordId {
     int32 id = 1;
 }
+
 message DeleteCurrencyByTagIn {
     string tag = 1;
 }
+
 message DeleteCurrencyByIdIn {
     int32 id = 1;
 }
+
 message CreateCurrencyIn {
     string tag = 1;
     int32 precision = 2;
 }
+
 message CreateCurrencyOut {
     int32 id = 1;
 }
+
 message GetCurrencyByTagIn {
     string tag = 1;
     bool include_deleted = 2;
 }
+
 message GetCurrencyByIdIn {
     int32 id = 1;
     bool include_deleted = 2;
 }
+
 message GetCurrenciesIn {
     bool include_deleted = 1;
 }
+
 message GetAccountIn {
     int32 id = 1;
     bool include_deleted = 2;
 }
+
 message CreateAccountIn {
     int32 user_id = 1;
     int32 currency_id = 2;
     AccountType type = 3;
     int32 leverage = 5;
 }
+
 message DepositToAccountIn {
     int32 id = 1;
     string amount = 2;
     string initiator = 3;
     string reason = 4;
 }
+
 message WithdrawFromAccountIn {
     int32 id = 1;
     string amount = 2;
     string initiator = 3;
     string reason = 4;
 }
+
 message GetAccountBalanceHistoryIn {
     int32 id = 1;
     google.protobuf.Timestamp time_from = 2;
     google.protobuf.Timestamp time_to = 3;
 }
+
 message GetAccountBalanceHistoryOut {
     repeated BalanceHistoryRecord records = 1;
 }
+
 message FreezeIn {
     int32 account_id = 1;
     string amount = 2;
     int32 deal_id = 3;
 }
+
 message UnfreezeIn {
     int32 deal_id = 1;
 }
+
 message RegisterDealIn {
     int32 deal_id = 1;
     int32 payment_account_id = 2;

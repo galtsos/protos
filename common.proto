@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-
 message BoolResult {
     bool result = 1;
 }

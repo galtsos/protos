@@ -15,6 +15,7 @@ message Currency {
     google.protobuf.Timestamp deleting_time = 5;
 }
 
+// TODO Remove
 message Currencies {
     repeated Currency currencies = 1;
 }
@@ -30,6 +31,7 @@ message Account {
     int32 user_id = 8;
 }
 
+// TODO Remove
 message Accounts {
     repeated Account accounts = 1;
 }

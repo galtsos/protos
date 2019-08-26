@@ -26,27 +26,12 @@ service TradeAccount {
     rpc RegisterDeal (RegisterDealIn) returns (BoolResult);
 }
 
-message GetAccountsIn {
-    int32 user_id = 1;
-    bool include_deleted = 2;
+message CreateCurrencyIn {
+    string tag = 1;
+    int32 precision = 2;
 }
 
-message AccountSubscriberIn {
-    string session_hash = 1;
-    repeated int32 account_id_list = 2;
-}
-
-message AccountId {
-    int32 account_id = 1;
-}
-
-message BalanceChangeOut {
-    int64 counter = 1;
-    int64 counter_prev = 2;
-    BalanceHistoryRecord record = 3;
-}
-
-message RecordId {
+message CreateCurrencyOut {
     int32 id = 1;
 }
 
@@ -55,15 +40,6 @@ message DeleteCurrencyByTagIn {
 }
 
 message DeleteCurrencyByIdIn {
-    int32 id = 1;
-}
-
-message CreateCurrencyIn {
-    string tag = 1;
-    int32 precision = 2;
-}
-
-message CreateCurrencyOut {
     int32 id = 1;
 }
 
@@ -86,6 +62,11 @@ message GetAccountIn {
     bool include_deleted = 2;
 }
 
+message GetAccountsIn {
+    int32 user_id = 1;
+    bool include_deleted = 2;
+}
+
 message CreateAccountIn {
     int32 user_id = 1;
     int32 currency_id = 2;
@@ -93,11 +74,19 @@ message CreateAccountIn {
     int32 leverage = 5;
 }
 
+message AccountId {
+    int32 account_id = 1;
+}
+
 message DepositToAccountIn {
     int32 id = 1;
     string amount = 2;
     string initiator = 3;
     string reason = 4;
+}
+
+message RecordId {
+    int32 id = 1;
 }
 
 message WithdrawFromAccountIn {
@@ -115,6 +104,17 @@ message GetAccountBalanceHistoryIn {
 
 message GetAccountBalanceHistoryOut {
     repeated BalanceHistoryRecord records = 1;
+}
+
+message AccountSubscriberIn {
+    string session_hash = 1;
+    repeated int32 account_id_list = 2;
+}
+
+message BalanceChangeOut {
+    int64 counter = 1;
+    int64 counter_prev = 2;
+    BalanceHistoryRecord record = 3;
 }
 
 message FreezeIn {

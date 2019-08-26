@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
-import "entities.proto";
+import "symbol/entities.proto";
 
 service SymbolService {
     rpc GetAssetsList(google.protobuf.Empty) returns (GetAssetsListOut);

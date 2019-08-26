@@ -1,12 +1,8 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
-import "entities.proto";
+import "deal/entities.proto";
 import "common.proto";
-
-/*
-type for money is string
-*/
 
 service DealService {
     rpc SetTradeEndpointForMarket(SetTradeEndpointForMarketIn) returns (BoolResult);

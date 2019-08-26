@@ -1,13 +1,8 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "trade-account/entities.proto";
 import "common.proto";
-import "entities.proto";
-
-/*
-type for money is string
-type for time is 'google/protobuf/timestamp.proto'
-*/
 
 service TradeAccount {
     rpc CreateCurrency (CreateCurrencyIn) returns (CreateCurrencyOut);

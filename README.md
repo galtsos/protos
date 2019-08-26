@@ -35,15 +35,17 @@ RUN mkdir /root/.ssh
 # Put here SSH keys to access protos repo on Bitbucket
 COPY ssh-keys/* /root/.ssh/
 
+ARG PROTOS_HOST=bitbucket.org
+ARG PROTOS_DSN=git@${PROTOS_HOST}:globalforexsystems/protos.git
 ARG PROTOS_BRANCH=master
 
 RUN set -e; \
     chmod 600 /root/.ssh/*; \
-    echo -e "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config; \
+    echo -e "Host ${PROTOS_HOST}\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config; \
     # Unfortunately there is a glitch when store result in the default /git directory
     mkdir /protos; \
     cd /protos; \
-    git clone --depth 1 -b $PROTOS_BRANCH git@bitbucket.org:globalforexsystems/protos.git .; \
+    git clone --depth 1 -b $PROTOS_BRANCH $PROTOS_DSN .; \
     rm -rf .git
 ```
 

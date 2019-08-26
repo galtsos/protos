@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "common.proto";
+
+message TradeError {
+    enum Code {
+        NO_ERROR = 0;
+    }
+    Code code = 1;
+    string details = 2;
+}
+message TradeResult {
+    string source_amount = 1;
+    string target_amount = 2;
+    string price = 3;
+}
+message TradeInProgress {
+}

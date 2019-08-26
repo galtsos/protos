@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
-import "google/protobuf/timestamp.proto";
 import "common.proto";
+import "entities.proto";
 
 /*
 type for money is string
@@ -74,33 +74,6 @@ message GetCurrencyByIdIn {
 message GetCurrenciesIn {
     bool include_deleted = 1;
 }
-message Currencies {
-    repeated Currency currencies = 1;
-}
-message Currency {
-    int32 id = 1;
-    string tag = 2;
-    int32 precision = 3;
-    google.protobuf.Timestamp creating_time = 4;
-    google.protobuf.Timestamp deleting_time = 5;
-}
-enum AccountType {
-    DEMO = 0;
-    REAL = 1;
-}
-message Account {
-    int32 id = 1;
-    string num = 2;
-    AccountType type = 3;
-    int32 leverage = 4;
-    google.protobuf.Timestamp creating_time = 5;
-    google.protobuf.Timestamp deleting_time = 6;
-    int32 currency_id = 7;
-    int32 user_id = 8;
-}
-message Accounts {
-    repeated Account accounts = 1;
-}
 message GetAccountIn {
     int32 id = 1;
     bool include_deleted = 2;
@@ -130,15 +103,6 @@ message GetAccountBalanceHistoryIn {
 }
 message GetAccountBalanceHistoryOut {
     repeated BalanceHistoryRecord records = 1;
-}
-message BalanceHistoryRecord {
-    int32 id = 1;
-    google.protobuf.Timestamp event_time = 2;
-    string operation = 3;
-    string amount = 4;
-    int32 account_id = 5;
-    string initiator = 6;
-    string reason = 7;
 }
 message FreezeIn {
     int32 account_id = 1;

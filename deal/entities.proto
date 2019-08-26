@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "common.proto";
+
+message Deal {
+    enum State {
+        NEW = 0;
+        MONEY_FREEZED = 1;
+        IN_TRADE = 2;
+        SUCCESS = 3;
+        TRADE_FAILED = 4;
+        MANUAL = 5;
+        FAIL = 6;
+    }
+    enum Side {
+        BUY = 0;
+        SELL = 1;
+    }
+    int32 id = 1;
+    int32 user_id = 2;
+    MarketId market_id = 3;
+    Side side = 4;
+    string requested_volume = 5;
+    string requested_volume_price = 6;
+    string finish_volume_price = 7;
+    int32 payment_account_id = 8;
+    string payment_amount = 9;
+    int32 receiver_account_id = 10;
+    string received_amount = 11;
+    repeated string tags = 12;
+    State state = 13;
+    string state_details = 14;
+    google.protobuf.Timestamp create_time = 15;
+    google.protobuf.Timestamp finish_time = 16;
+}

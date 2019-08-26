@@ -1,7 +1,8 @@
 syntax = "proto3";
 
+import "entities.proto";
 import "common.proto";
-import "deal/api.proto";
+import "deal/entities.proto";
 
 /*
 type for money is string
@@ -12,18 +13,6 @@ service ExchangeTrading {
     rpc CheckTradeStatus(CheckTradeStatusIn) returns (CheckTradeStatusOut);
 }
 
-message TradeError {
-    enum Code {
-        NO_ERROR = 0;
-    }
-    Code code = 1;
-    string details = 2;
-}
-message TradeResult {
-    string source_amount = 1;
-    string target_amount = 2;
-    string price = 3;
-}
 message TradeIn {
     int32 deal_id = 1;
     MarketId market_id = 2;
@@ -35,8 +24,6 @@ message TradeOut {
 }
 message CheckTradeStatusIn {
     int32 deal_id = 1;
-}
-message TradeInProgress {
 }
 message CheckTradeStatusOut {
     oneof trade_result {

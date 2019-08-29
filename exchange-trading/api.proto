@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 import "exchange-trading/entities.proto";
-import "common.proto";
 import "deal/entities.proto";
+import "common.proto";
 
 service ExchangeTrading {
     rpc Trade(TradeIn) returns (TradeOut);

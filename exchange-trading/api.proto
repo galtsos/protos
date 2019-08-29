@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+import "exchange-trading/entities.proto";
+import "deal/entities.proto";
+import "common.proto";
+
+service ExchangeTrading {
+    rpc Trade(TradeIn) returns (TradeOut);
+    rpc CheckTradeStatus(CheckTradeStatusIn) returns (CheckTradeStatusOut);
+}
+
+message TradeIn {
+    int32 deal_id = 1;
+    MarketId market_id = 2;
+    Deal.Side side = 3;
+    string volume = 4;
+}
+
+message TradeOut {
+    TradeError error = 1;
+}
+
+message CheckTradeStatusIn {
+    int32 deal_id = 1;
+}
+
+message CheckTradeStatusOut {
+    oneof trade_result {
+        TradeInProgress in_progress = 1;
+        TradeResult result = 2;
+        TradeError error = 3;
+    }
+}

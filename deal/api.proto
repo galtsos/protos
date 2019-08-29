@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "deal/entities.proto";
+import "common.proto";
+
+service DealService {
+    rpc SetTradeEndpointForMarket(SetTradeEndpointForMarketIn) returns (BoolResult);
+    rpc DeleteMarket(MarketId) returns (BoolResult);
+    rpc MakeLimitDeal(MakeLimitDealIn) returns (MakeLimitDealOut);
+    rpc GetDealsList(GetDealsListIn) returns (GetDealsListOut);
+    rpc SubscribeToDealsChange(SubscribeToDealsChangeIn) returns (stream SubscribeToDealsChangeOut);
+    rpc StartSession(google.protobuf.Empty) returns (SessionHash);
+    rpc FinishSession(SessionHash) returns (BoolResult);
+    rpc ManualDealFinish(ManualDealFinishIn) returns (BoolResult);
+}
+
+message MakeLimitDealIn {
+    Deal.Side side = 1;
+    MarketId market_id = 2;
+    string volume = 3;
+    string volume_price = 4;
+    int32 payment_account_id = 5;
+    int32 receiver_account_id = 6;
+    repeated string tags = 7;
+}
+
+message MakeLimitDealOut {
+    int32 deal_id = 1;
+}
+
+message SetTradeEndpointForMarketIn {
+    MarketId market_id = 1;
+    string trade_endpoint = 2;
+}
+
+message GetDealsListIn {
+    int32 user_id = 1;
+}
+
+message GetDealsListOut {
+    repeated Deal deals = 1;
+}
+
+message SubscribeToDealsChangeIn {
+    string session_hash = 1;
+    int32 user_id = 2;
+}
+
+message SubscribeToDealsChangeOut {
+    int64 counter = 1;
+    int64 counter_prev = 2;
+    Deal deal = 3;
+}
+
+message ManualDealFinishIn {
+    int32 deal_id = 1;
+    bool success = 2;
+    string details = 3;
+}

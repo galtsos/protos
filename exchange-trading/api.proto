@@ -5,8 +5,8 @@ import "deal/entities.proto";
 import "common.proto";
 
 service ExchangeTrading {
-    rpc Trade(TradeIn) returns (TradeOut);
-    rpc CheckTradeStatus(CheckTradeStatusIn) returns (CheckTradeStatusOut);
+    rpc Trade (TradeIn) returns (TradeOut);
+    rpc CheckTradeStatus (CheckTradeStatusIn) returns (CheckTradeStatusOut);
 }
 
 message TradeIn {

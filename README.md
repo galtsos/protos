@@ -32,8 +32,8 @@ FROM alpine/git:1.0.7 AS protos-gitter
 
 RUN mkdir /root/.ssh
 
-# Put here SSH keys to access protos repo on Bitbucket
-COPY ssh-keys/* /root/.ssh/
+# A private part of SSH key to access the protos repo
+COPY protos-id_rsa /root/.ssh/id_rsa
 
 ARG PROTOS_HOST=bitbucket.org
 ARG PROTOS_DSN=git@${PROTOS_HOST}:globalforexsystems/protos.git
@@ -49,7 +49,7 @@ RUN set -e; \
     rm -rf .git
 ```
 
-Для их выполнения понадобятся SSH-ключи в локальной директории `ssh-keys` для прохождения авторизации. Также при запуске сборки потребуется указать `--build-arg PROTOS_BRANCH=foo`, чтобы выбрать ветку (версию) репозитория `protos`, которая будет скачана.
+Для их выполнения понадобится  файл `protos-id_rsa` с приватной частью SSH-ключа, дающего доступ к репозиторию `protos`. Также при запуске сборки потребуется указать `--build-arg PROTOS_BRANCH=foo`, чтобы выбрать ветку (версию) репозитория `protos`, которая будет скачана.
 
 После них нужно разместить инструкции для сборки целевого образа; например, Python-приложения:
 
@@ -60,9 +60,11 @@ RUN pip install pipenv
 
 WORKDIR /var/app/src
 
-COPY Pipfile* ./
+COPY src/Pipfile* ./
 
 RUN pipenv install --deploy --system
+
+COPY src/ .
 
 COPY --from=protos-gitter /protos ./protos
 # Just for inject a different proto-files for development
@@ -105,6 +107,7 @@ docker kill $HASH
 Добавьте эти маски в `.gitignore`, чтобы случайно не закоммитить сгенерированные файлы в репозиторий приложения:
 
 ```gitignore
+*.proto
 *_pb2.py
 *_pb2_grpc.py
 ```

@@ -5,7 +5,7 @@ import "google/protobuf/timestamp.proto";
 import "trade-account/entities.proto";
 import "common.proto";
 
-service TradeAccount {
+service TradeAccountApi {
     rpc CreateCurrency (CreateCurrencyIn) returns (CreateCurrencyOut);
     rpc DeleteCurrencyByTag (DeleteCurrencyByTagIn) returns (BoolResult);
     rpc DeleteCurrencyById (DeleteCurrencyByIdIn) returns (BoolResult);

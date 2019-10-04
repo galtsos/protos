@@ -4,7 +4,7 @@ import "google/protobuf/empty.proto";
 import "deal/entities.proto";
 import "common.proto";
 
-service DealService {
+service DealServiceApi {
     rpc SetTradeEndpointForMarket(SetTradeEndpointForMarketIn) returns (BoolResult);
     rpc DeleteMarket(MarketId) returns (BoolResult);
     rpc MakeLimitDeal(MakeLimitDealIn) returns (MakeLimitDealOut);

@@ -3,7 +3,7 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "symbol/entities.proto";
 
-service SymbolService {
+service SymbolServiceApi {
     rpc GetAssetsList (google.protobuf.Empty) returns (GetAssetsListOut);
     rpc GetSymbolsList (google.protobuf.Empty) returns (GetSymbolsListOut);
     rpc GetMarketsList (google.protobuf.Empty) returns (GetMarketsListOut);

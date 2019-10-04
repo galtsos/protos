@@ -66,18 +66,27 @@ RUN pipenv install --deploy --system
 
 COPY src/ .
 
-COPY --from=protos-gitter /protos ./protos
+COPY --from=protos-gitter /protos ./protos_orig
 # Just for inject a different proto-files for development
-#COPY protos ./protos
+#COPY protos ./protos_orig
 
 RUN set -e; \
-    cd protos; \
-    python -m grpc_tools.protoc -I. --python_out=.. \
-        market-info/api.proto market-info/entities.proto; \
-    python -m grpc_tools.protoc -I. --grpc_python_out=.. \
-        market-info/api.proto; \
-    # Build another proto-files here
-    rm -rf ../protos
+    mkdir -p protos; \
+    cd protos_orig; \
+    python -m grpc_tools.protoc -I. --python_out=../protos common.proto; \
+    SERVICES="deal trade-account"; \
+    for service in $SERVICES; do \
+        python -m grpc_tools.protoc -I. --python_out=../protos \
+            $service/api.proto $service/entities.proto; \
+        python -m grpc_tools.protoc -I. --grpc_python_out=../protos $service/api.proto; \
+        dir_name=$(echo $service | sed 's/-/_/g'); \
+        cp $service/*.proto ../protos/$dir_name; \
+    done; \
+    rm -rf ../protos_orig; \
+    echo "import os.path as osp \n\
+import sys \n\
+\n\
+sys.path.append(osp.join(osp.dirname(osp.dirname(osp.abspath(__file__))), 'protos'))" > ../protos/__init__.py
 ```
 
 Чтобы последнее заработало, нужно добавить пакет `grpcio-tools` в `Pipfile`. Также не забудьте в обоих наборах инструкций указать `LABEL maintainer="..."`

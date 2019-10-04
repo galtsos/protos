@@ -108,9 +108,7 @@ api_pb2.py  api_pb2_grpc.py  entities_pb2.py
 
 ```shell script
 cd $LOCAL_SERVICE_DIR/src/
-docker run -d --rm $IMAGE bash -c 'sleep 3600' # There will be a container hash in the output
-docker cp $HASH:/var/app/src/market_info - | tar -x # Repeat for another pathes of web-services
-docker kill $HASH
+docker run -d --rm $IMAGE bash -c 'sleep 10' | xargs -i{} docker cp {}:/var/app/src/protos - | tar -x
 ```
 
 Добавьте эти маски в `.gitignore`, чтобы случайно не закоммитить сгенерированные файлы в репозиторий приложения:

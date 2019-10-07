@@ -32,8 +32,8 @@ FROM alpine/git:1.0.7 AS protos-gitter
 
 RUN mkdir /root/.ssh
 
-# Put here SSH keys to access protos repo on Bitbucket
-COPY ssh-keys/* /root/.ssh/
+# A private part of SSH key to access the protos repo
+COPY protos-id_rsa /root/.ssh/id_rsa
 
 ARG PROTOS_HOST=bitbucket.org
 ARG PROTOS_DSN=git@${PROTOS_HOST}:globalforexsystems/protos.git
@@ -49,7 +49,7 @@ RUN set -e; \
     rm -rf .git
 ```
 
-Для их выполнения понадобятся SSH-ключи в локальной директории `ssh-keys` для прохождения авторизации. Также при запуске сборки потребуется указать `--build-arg PROTOS_BRANCH=foo`, чтобы выбрать ветку (версию) репозитория `protos`, которая будет скачана.
+Для их выполнения понадобится файл `protos-id_rsa` с приватной частью SSH-ключа, дающего доступ к репозиторию `protos`. Также при запуске сборки потребуется указать `--build-arg PROTOS_BRANCH=foo`, чтобы выбрать ветку (версию) репозитория `protos`, которая будет скачана.
 
 После них нужно разместить инструкции для сборки целевого образа; например, Python-приложения:
 
@@ -60,35 +60,49 @@ RUN pip install pipenv
 
 WORKDIR /var/app/src
 
-COPY Pipfile* ./
+COPY src/Pipfile* ./
 
 RUN pipenv install --deploy --system
 
-COPY --from=protos-gitter /protos ./protos
+COPY src/ .
+
+COPY --from=protos-gitter /protos ./protos_orig
 # Just for inject a different proto-files for development
-#COPY protos ./protos
+#COPY protos ./protos_orig
 
 RUN set -e; \
-    cd protos; \
-    python -m grpc_tools.protoc -I. --python_out=.. \
-        market-info/api.proto market-info/entities.proto; \
-    python -m grpc_tools.protoc -I. --grpc_python_out=.. \
-        market-info/api.proto; \
-    # Build another proto-files here
-    rm -rf ../protos
+    mkdir -p protos; \
+    cd protos_orig; \
+    python -m grpc_tools.protoc -I. --python_out=../protos common.proto; \
+    SERVICES="deal trade-account"; \
+    for service in $SERVICES; do \
+        python -m grpc_tools.protoc -I. --python_out=../protos \
+            $service/api.proto $service/entities.proto; \
+        python -m grpc_tools.protoc -I. --grpc_python_out=../protos $service/api.proto; \
+        dir_name=$(echo $service | sed 's/-/_/g'); \
+        cp $service/*.proto ../protos/$dir_name; \
+    done; \
+    rm -rf ../protos_orig; \
+    echo "import os.path as osp \n\
+import sys \n\
+\n\
+sys.path.append(osp.join(osp.dirname(osp.dirname(osp.abspath(__file__))), 'protos'))" > ../protos/__init__.py
 ```
 
 Чтобы последнее заработало, нужно добавить пакет `grpcio-tools` в `Pipfile`. Также не забудьте в обоих наборах инструкций указать `LABEL maintainer="..."`
 
-В результате выполнения этих наборов инструкций в директории `/var/app/src` будут находиться поддиректории с именами веб-сервисов, например `market-info`, в которых будут находиться только `pb2`-файлы:
+В результате выполнения этих наборов инструкций в директории `/var/app/src/protos` будут находиться поддиректории с именами веб-сервисов, например `exchange_trading`, в которых будут находиться `pb2`- и `.proto`-файлы:
 
 ```
-/var/app/src# ls -R
+/var/app/src/protos# ls -R
 .:
-Pipfile  Pipfile.lock  market_info
+__init__.py  common_pb2.py  deal  exchange_trading
 
-./market_info:
-api_pb2.py  api_pb2_grpc.py  entities_pb2.py
+./deal:
+api.proto  api_pb2.py  api_pb2_grpc.py  entities.proto  entities_pb2.py
+
+./exchange_trading:
+api.proto  api_pb2.py  api_pb2_grpc.py  entities.proto  entities_pb2.py
 ```
 
 ## Процесс разработки приложений
@@ -97,16 +111,13 @@ api_pb2.py  api_pb2_grpc.py  entities_pb2.py
 
 ```shell script
 cd $LOCAL_SERVICE_DIR/src/
-docker run -d --rm $IMAGE bash -c 'sleep 3600' # There will be a container hash in the output
-docker cp $HASH:/var/app/src/market_info - | tar -x # Repeat for another pathes of web-services
-docker kill $HASH
+docker run -d --rm $IMAGE bash -c 'sleep 10' | xargs -i{} docker cp {}:/var/app/src/protos - | tar -x
 ```
 
-Добавьте эти маски в `.gitignore`, чтобы случайно не закоммитить сгенерированные файлы в репозиторий приложения:
+Добавьте эту строчку в `.gitignore`, чтобы случайно не закоммитить сгенерированные файлы в репозиторий приложения:
 
 ```gitignore
-*_pb2.py
-*_pb2_grpc.py
+protos
 ```
 
 В указанных выше инструкциях сборки образа есть комментарий, как использовать локальные `.proto`-файлы вместо хранящихся в репозитории `protos`.
@@ -124,7 +135,7 @@ docker kill $HASH
     1. Находящиеся в библиотеках, например, `google/protobuf/empty.proto`
     1. Находящиеся в локальной директории модуля, например, `entities.proto`
     1. Находящиеся в других директориях проекта, например, `common.proto`
-    1. В оставшихся случаях порядок определяется сортировкой по алфавиту
+    1. В оставшихся случаях порядок определяется сортировкой по алфавиту без учёта регистра букв
 1. Для пустых сообщений использовать тип `google.protobuf.Empty`
-1. Для полей со временем времени использовать тип `google.protobuf.Timestamp`
+1. Для полей со временем использовать тип `google.protobuf.Timestamp`
 1. Для полей с денежными суммами использовать тип `string`

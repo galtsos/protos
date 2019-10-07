@@ -4,15 +4,15 @@ import "google/protobuf/empty.proto";
 import "deal/entities.proto";
 import "common.proto";
 
-service DealService {
-    rpc SetTradeEndpointForMarket(SetTradeEndpointForMarketIn) returns (BoolResult);
-    rpc DeleteMarket(MarketId) returns (BoolResult);
-    rpc MakeLimitDeal(MakeLimitDealIn) returns (MakeLimitDealOut);
-    rpc GetDealsList(GetDealsListIn) returns (GetDealsListOut);
-    rpc SubscribeToDealsChange(SubscribeToDealsChangeIn) returns (stream SubscribeToDealsChangeOut);
-    rpc StartSession(google.protobuf.Empty) returns (SessionHash);
-    rpc FinishSession(SessionHash) returns (BoolResult);
-    rpc ManualDealFinish(ManualDealFinishIn) returns (BoolResult);
+service DealServiceApi {
+    rpc SetTradeEndpointForMarket (SetTradeEndpointForMarketIn) returns (BoolResult);
+    rpc DeleteMarket (MarketId) returns (BoolResult);
+    rpc MakeLimitDeal (MakeLimitDealIn) returns (MakeLimitDealOut);
+    rpc GetDealsList (GetDealsListIn) returns (GetDealsListOut);
+    rpc SubscribeToDealsChange (SubscribeToDealsChangeIn) returns (stream SubscribeToDealsChangeOut);
+    rpc StartSession (google.protobuf.Empty) returns (SessionHash);
+    rpc FinishSession (SessionHash) returns (BoolResult);
+    rpc ManualDealFinish (ManualDealFinishIn) returns (BoolResult);
 }
 
 message MakeLimitDealIn {

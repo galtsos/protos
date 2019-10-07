@@ -4,7 +4,7 @@ import "google/protobuf/empty.proto";
 import "market-info/entities.proto";
 
 service MarketInfoApi {
-    rpc GetSymbolsList(google.protobuf.Empty) returns (GetSymbolsListOut);
+    rpc GetSymbolsList (google.protobuf.Empty) returns (GetSymbolsListOut);
 }
 
 message GetSymbolsListOut {

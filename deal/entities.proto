@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "common.proto";
+import "protos/common.proto";
 
 enum DealSide {
     BUY = 0;

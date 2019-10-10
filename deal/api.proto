@@ -18,9 +18,8 @@ message MakeLimitDealIn {
     MarketId market_id = 2;
     string volume = 3;
     string volume_price = 4;
-    int32 payment_account_id = 5;
-    int32 receiver_account_id = 6;
-    repeated string tags = 7;
+    string user_id = 5;
+    repeated string tags = 6;
 }
 
 message MakeLimitDealOut {

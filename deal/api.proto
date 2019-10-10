@@ -18,7 +18,7 @@ message MakeLimitDealIn {
     MarketId market_id = 2;
     string volume = 3;
     string volume_price = 4;
-    string user_id = 5;
+    int32 user_id = 5;
     repeated string tags = 6;
 }
 

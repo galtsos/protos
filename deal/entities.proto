@@ -3,24 +3,24 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "common.proto";
 
-message Deal {
+enum DealSide {
+    BUY = 0;
+    SELL = 1;
+}
+message LimitDeal {
     enum State {
         NEW = 0;
-        MONEY_FREEZED = 1;
+        ASSET_FREEZED = 1;
         IN_TRADE = 2;
         SUCCESS = 3;
         TRADE_FAILED = 4;
         MANUAL = 5;
         FAIL = 6;
     }
-    enum Side {
-        BUY = 0;
-        SELL = 1;
-    }
     int32 id = 1;
     int32 user_id = 2;
     MarketId market_id = 3;
-    Side side = 4;
+    DealSide side = 4;
     string requested_volume = 5;
     string requested_volume_price = 6;
     string finish_volume_price = 7;

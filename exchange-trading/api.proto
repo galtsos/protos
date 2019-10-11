@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-import "exchange-trading/entities.proto";
-import "deal/entities.proto";
-import "common.proto";
+import "protos/exchange-trading/entities.proto";
+import "protos/deal/entities.proto";
+import "protos/common.proto";
 
 service ExchangeTradingApi {
     rpc Trade (TradeIn) returns (TradeOut);
@@ -12,7 +12,7 @@ service ExchangeTradingApi {
 message TradeIn {
     int32 deal_id = 1;
     MarketId market_id = 2;
-    Deal.Side side = 3;
+    DealSide side = 3;
     string volume = 4;
 }
 

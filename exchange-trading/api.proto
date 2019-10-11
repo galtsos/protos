@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "exchange-trading/entities.proto";
+import "protos/exchange-trading/entities.proto";
 import "protos/deal/entities.proto";
 import "protos/common.proto";
 

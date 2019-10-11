@@ -7,6 +7,7 @@ enum DealSide {
     BUY = 0;
     SELL = 1;
 }
+
 message LimitDeal {
     enum State {
         NEW = 0;

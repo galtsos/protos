@@ -31,37 +31,37 @@ message Id {
 
 message Asset {
     int32 id = 1;
-    string name = 2;
-    string tag = 3;
-    int32 precision = 4;
-    google.protobuf.Timestamp create_time = 5;
-    google.protobuf.Timestamp delete_time = 6;
+    string tag = 2;
+    google.protobuf.Timestamp create_time = 3;
+    google.protobuf.Timestamp delete_time = 4;
+    string name = 5;
+    int32 precision = 6;
 }
 
 message Symbol {
     int32 id = 1;
-    int32 base_asset_id = 2;
-    int32 quote_asset_id = 3;
-    google.protobuf.Timestamp create_time = 4;
-    google.protobuf.Timestamp delete_time = 5;
+    google.protobuf.Timestamp create_time = 2;
+    google.protobuf.Timestamp delete_time = 3;
+    int32 base_asset_id = 4;
+    int32 quote_asset_id = 5;
 }
 
 message Market {
     int32 id = 1;
     string tag = 2;
-    int32 symbol_id = 3;
-    int32 exchange_id = 4;
-    string trade_endpoint = 5;
-    google.protobuf.Timestamp create_time = 6;
-    google.protobuf.Timestamp delete_time = 7;
+    google.protobuf.Timestamp create_time = 3;
+    google.protobuf.Timestamp delete_time = 4;
+    int32 symbol_id = 5;
+    int32 exchange_id = 6;
+    string trade_endpoint = 7;
 }
 
 message Exchange {
     int32 id = 1;
-    string name = 2;
-    string tag = 3;
-    google.protobuf.Timestamp create_time = 4;
-    google.protobuf.Timestamp delete_time = 5;
+    string tag = 2;
+    google.protobuf.Timestamp create_time = 3;
+    google.protobuf.Timestamp delete_time = 4;
+    string name = 5;
     google.protobuf.Timestamp disable_time = 6;
 }
 

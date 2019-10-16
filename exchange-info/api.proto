@@ -3,10 +3,13 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "protos/exchange-info/entities.proto";
+import "protos/common.proto";
 
 service ExchangeInfoApi {
-    rpc GetEntities (EntitiesList) returns (Entities);
+    rpc StartSession (google.protobuf.Empty) returns (SessionHash);
+    rpc FinishSession (SessionHash) returns (BoolResult);
     rpc SubscribeToEntitiesChange (EntitiesList) returns (stream SubscribeToEntitiesChangeOut);
+    rpc GetEntities (EntitiesList) returns (Entities);
     rpc AddAsset (AddAssetIn) returns (Id);
     rpc GetAsset (Tag) returns (Asset);
     rpc DeleteAsset (Tag) returns (google.protobuf.Empty);

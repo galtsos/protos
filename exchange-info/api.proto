@@ -10,27 +10,23 @@ service ExchangeInfoApi {
     rpc SubscribeToEntitiesChange (EntitiesList) returns (stream SubscribeToEntitiesChangeOut);
     rpc GetEntities (EntitiesList) returns (Entities);
     rpc AddAsset (AddAssetIn) returns (Id);
-    rpc GetAsset (Tag) returns (Asset);
-    rpc DeleteAsset (Tag) returns (google.protobuf.Empty);
+    rpc GetAsset (Id) returns (Asset);
+    rpc DeleteAsset (Id) returns (google.protobuf.Empty);
     rpc AddSymbol (AddSymbolIn) returns (Id);
-    rpc GetSymbol (Tag) returns (Symbol);
-    rpc DeleteSymbol (Tag) returns (google.protobuf.Empty);
+    rpc GetSymbol (Id) returns (Symbol);
+    rpc DeleteSymbol (Id) returns (google.protobuf.Empty);
     rpc AddMarket (AddMarketIn) returns (Id);
-    rpc GetMarket (Tag) returns (Market);
-    rpc DeleteMarket (Tag) returns (google.protobuf.Empty);
+    rpc GetMarket (Id) returns (Market);
+    rpc DeleteMarket (Id) returns (google.protobuf.Empty);
     rpc AddExchange (AddExchangeIn) returns (Id);
-    rpc GetExchange (Tag) returns (Exchange);
-    rpc DeleteExchange (Tag) returns (google.protobuf.Empty);
-    rpc DisableExchange (Tag) returns (google.protobuf.Empty);
-    rpc EnableExchange (Tag) returns (google.protobuf.Empty);
+    rpc GetExchange (Id) returns (Exchange);
+    rpc DeleteExchange (Id) returns (google.protobuf.Empty);
+    rpc DisableExchange (Id) returns (google.protobuf.Empty);
+    rpc EnableExchange (Id) returns (google.protobuf.Empty);
 }
 
 message Id {
     int32 id = 1;
-}
-
-message Tag {
-    string tag = 1;
 }
 
 message Asset {

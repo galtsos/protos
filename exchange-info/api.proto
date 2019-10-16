@@ -7,8 +7,8 @@ import "protos/common.proto";
 service ExchangeInfoApi {
     rpc StartSession (google.protobuf.Empty) returns (SessionHash);
     rpc FinishSession (SessionHash) returns (BoolResult);
-    rpc SubscribeToEntitiesChange (EntitiesList) returns (stream SubscribeToEntitiesChangeOut);
-    rpc GetEntities (EntitiesList) returns (Entities);
+    rpc SubscribeToEntitiesChange (EntityKinds) returns (stream SubscribeToEntitiesChangeOut);
+    rpc GetEntities (EntityKinds) returns (Entities);
     rpc AddAsset (AddAssetIn) returns (Id);
     rpc GetAsset (Id) returns (Asset);
     rpc DeleteAsset (Id) returns (google.protobuf.Empty);
@@ -65,8 +65,8 @@ message Exchange {
     google.protobuf.Timestamp disable_time = 6;
 }
 
-message EntitiesList {
-    repeated Entity entities = 1;
+message EntityKinds {
+    repeated EntityKind entity_kinds = 1;
 }
 
 message Entities {
@@ -105,7 +105,7 @@ message SubscribeToEntitiesChangeOut {
     Entities entities = 3;
 }
 
-enum Entity {
+enum EntityKind {
     ASSET = 0;
     SYMBOL = 1;
     MARKET = 2;

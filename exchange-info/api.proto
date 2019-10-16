@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "protos/exchange-info/entities.proto";
+
+service ExchangeInfoApi {
+    rpc GetEntities (EntitiesList) returns (Entities);
+    rpc SubscribeToEntitiesChange (EntitiesList) returns (stream SubscribeToEntitiesChangeOut);
+    rpc AddAsset (AddAssetIn) returns (Id);
+    rpc GetAsset (Tag) returns (Asset);
+    rpc DeleteAsset (Tag) returns (google.protobuf.Empty);
+    rpc AddSymbol (AddSymbolIn) returns (Id);
+    rpc GetSymbol (Tag) returns (Symbol);
+    rpc DeleteSymbol (Tag) returns (google.protobuf.Empty);
+    rpc AddMarket (AddMarketIn) returns (Id);
+    rpc GetMarket (Tag) returns (Market);
+    rpc DeleteMarket (Tag) returns (google.protobuf.Empty);
+    rpc AddExchange (AddExchangeIn) returns (Id);
+    rpc GetExchange (Tag) returns (Exchange);
+    rpc DeleteExchange (Tag) returns (google.protobuf.Empty);
+    rpc DisableExchange (Tag) returns (google.protobuf.Empty);
+    rpc EnableExchange (Tag) returns (google.protobuf.Empty);
+}
+
+message Id {
+    int32 id = 1;
+}
+
+message Tag {
+    string tag = 1;
+}
+
+message Asset {
+    int32 id = 1;
+    string name = 2;
+    string tag = 3;
+    int32 precision = 4;
+    google.protobuf.Timestamp create_time = 5;
+    google.protobuf.Timestamp delete_time = 6;
+}
+
+message Symbol {
+    int32 id = 1;
+    int32 base_asset_id = 2;
+    int32 quote_asset_id = 3;
+    google.protobuf.Timestamp create_time = 4;
+    google.protobuf.Timestamp delete_time = 5;
+}
+
+message Market {
+    int32 id = 1;
+    string tag = 2;
+    int32 symbol_id = 3;
+    int32 exchange_id = 4;
+    string trade_endpoint = 5;
+    google.protobuf.Timestamp create_time = 6;
+    google.protobuf.Timestamp delete_time = 7;
+}
+
+message Exchange {
+    int32 id = 1;
+    string name = 2;
+    string tag = 3;
+    google.protobuf.Timestamp create_time = 4;
+    google.protobuf.Timestamp delete_time = 5;
+    google.protobuf.Timestamp disable_time = 6;
+}
+
+message EntitiesList {
+    repeated Entity entities = 1;
+}
+
+message Entities {
+    map<int32, Asset> assets = 1;
+    map<int32, Symbol> symbols = 2;
+    map<int32, Market> markets = 3;
+    map<int32, Exchange> exchanges = 4;
+}
+
+message AddAssetIn {
+    string name = 1;
+    string tag = 2;
+    int32 precision = 3;
+}
+
+message AddSymbolIn {
+    string base_asset_tag = 1;
+    string quote_asset_tag = 2;
+}
+
+message AddMarketIn {
+    string market_tag = 1;
+    string symbol_tag = 2;
+    string exchange_tag = 3;
+    string trade_endpoint = 4;
+}
+
+message AddExchangeIn {
+    string name = 1;
+    string tag = 2;
+}
+
+message SubscribeToEntitiesChangeOut {
+    int64 counter = 1;
+    int64 counter_prev = 2;
+    Entities entities = 3;
+}

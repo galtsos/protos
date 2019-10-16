@@ -2,7 +2,6 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "protos/exchange-info/entities.proto";
 import "protos/common.proto";
 
 service ExchangeInfoApi {
@@ -108,4 +107,11 @@ message SubscribeToEntitiesChangeOut {
     int64 counter = 1;
     int64 counter_prev = 2;
     Entities entities = 3;
+}
+
+enum Entity {
+    ASSET = 0;
+    SYMBOL = 1;
+    MARKET = 2;
+    EXCHANGE = 4;
 }

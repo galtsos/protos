@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-enum Entity {
-    ASSET = 0;
-    SYMBOL = 1;
-    MARKET = 2;
-    EXCHANGE = 4;
-}

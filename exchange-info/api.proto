@@ -108,7 +108,12 @@ message SubscribeToEntitiesChangeIn {
 message SubscribeToEntitiesChangeOut {
     int64 counter = 1;
     int64 counter_prev = 2;
-    Entities entities = 3;
+    oneof kind {
+        Asset asset = 3;
+        Symbol symbol = 4;
+        Market market = 5;
+        Exchange exchange = 6;
+    }
 }
 
 enum EntityKind {

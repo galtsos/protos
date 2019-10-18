@@ -120,5 +120,5 @@ enum EntityKind {
     ASSET = 0;
     SYMBOL = 1;
     MARKET = 2;
-    EXCHANGE = 4;
+    EXCHANGE = 3;
 }

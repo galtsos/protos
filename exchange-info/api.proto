@@ -7,7 +7,8 @@ import "protos/common.proto";
 service ExchangeInfoApi {
     rpc StartSession (google.protobuf.Empty) returns (SessionHash);
     rpc FinishSession (SessionHash) returns (BoolResult);
-    rpc SubscribeToEntitiesChange (EntityKinds) returns (stream SubscribeToEntitiesChangeOut);
+    rpc SubscribeToEntitiesChange (SubscribeToEntitiesChangeIn)
+        returns (stream SubscribeToEntitiesChangeOut);
     rpc GetEntities (EntityKinds) returns (Entities);
     rpc AddAsset (AddAssetIn) returns (Id);
     rpc GetAsset (Id) returns (Asset);
@@ -97,6 +98,11 @@ message AddMarketIn {
 message AddExchangeIn {
     string name = 1;
     string tag = 2;
+}
+
+message SubscribeToEntitiesChangeIn {
+    string session_hash = 1;
+    repeated EntityKind entity_kinds = 2;
 }
 
 message SubscribeToEntitiesChangeOut {

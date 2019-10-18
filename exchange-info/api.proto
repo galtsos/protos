@@ -83,14 +83,14 @@ message AddAssetIn {
 }
 
 message AddSymbolIn {
-    string base_asset_tag = 1;
-    string quote_asset_tag = 2;
+    string base_asset_id = 1;
+    string quote_asset_id = 2;
 }
 
 message AddMarketIn {
-    string market_tag = 1;
-    string symbol_tag = 2;
-    string exchange_tag = 3;
+    string tag = 1;
+    string symbol_id = 2;
+    string exchange_id = 3;
     string trade_endpoint = 4;
 }
 

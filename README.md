@@ -70,40 +70,33 @@ RUN pipenv install --deploy --system
 
 COPY src/ .
 
-COPY --from=protos-gitter /protos ./protos
+COPY --from=protos-gitter /protos protos_orig/protos
 # Just for inject a different proto-files for development
-#COPY protos ./protos
+#COPY protos protos_orig/protos
 
 RUN set -e; \
-    mkdir -p protos_out; \
-    python -m grpc_tools.protoc -I. --python_out=protos_out ./protos/common.proto; \
-    cp ./protos/common.proto ./protos_out/protos/common.proto ; \
-    SERVICES="deal exchange-trading trade-account"; \
+    cd protos_orig; \
+    python -m grpc_tools.protoc -I. --python_out=.. protos/common.proto; \
+    cp protos/common.proto ../protos/common.proto ; \
+    SERVICES="deal exchange-trading"; \
     for service in $SERVICES; do \
-        python -m grpc_tools.protoc -I. --python_out=./protos_out \
-            ./protos/$service/api.proto ./protos/$service/entities.proto; \
-        python -m grpc_tools.protoc -I. --grpc_python_out=./protos_out \
-            ./protos/$service/api.proto; \
+        python -m grpc_tools.protoc -I. --python_out=.. \
+            protos/$service/api.proto protos/$service/entities.proto; \
+        python -m grpc_tools.protoc -I. --grpc_python_out=.. protos/$service/api.proto; \
         dir_name=$(echo $service | sed 's/-/_/g'); \
-        cp ./protos/$service/*.proto ./protos_out/protos/$dir_name ; \
+        cp protos/$service/*.proto ../protos/$dir_name ; \
     done; \
-    rm -rf protos; \
-    mv protos_out/protos ./protos; \
-    rm -rf protos_out; \
-    echo "import os.path as osp \n\
-import sys \n\
-\n\
-sys.path.append(osp.join(osp.dirname(osp.dirname(osp.abspath(__file__))), 'protos'))" > protos/__init__.py
+    rm -rf ../protos_orig
 ```
 
-Чтобы последнее заработало, нужно добавить пакет `grpcio-tools` в `Pipfile`. Также не забудьте в обоих наборах инструкций указать `LABEL maintainer="..."`
+Чтобы последнее заработало, нужно добавить пакет `grpcio-tools` в `Pipfile`. Также нужно не забыть отредактировать список `SERVICES` в соответствии с нужными сервисами, и в обоих наборах инструкций указать `LABEL maintainer="..."`.
 
 В результате выполнения этих наборов инструкций в директории `/var/app/src/protos` будут находиться поддиректории с именами веб-сервисов, например `exchange_trading`, в которых будут находиться `pb2`- и `.proto`-файлы:
 
 ```
 /var/app/src/protos# ls -R
 .:
-__init__.py  common_pb2.py  common.proto  deal  exchange_trading
+common_pb2.py  common.proto  deal  exchange_trading
 
 ./deal:
 api.proto  api_pb2.py  api_pb2_grpc.py  entities.proto  entities_pb2.py

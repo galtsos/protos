@@ -53,7 +53,7 @@ message AddSymbolIn {
 }
 
 message AddMarketIn {
-    string tag = 1;
+    string custom_tag = 1;
     int32 symbol_id = 2;
     int32 exchange_id = 3;
     string trade_endpoint = 4;

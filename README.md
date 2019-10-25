@@ -41,7 +41,7 @@ COPY protos-id_rsa /root/.ssh/id_rsa
 
 ARG PROTOS_HOST=bitbucket.org
 ARG PROTOS_DSN=git@${PROTOS_HOST}:globalforexsystems/protos.git
-ARG PROTOS_BRANCH=master
+ARG PROTOS_BRANCH
 
 RUN set -e; \
     chmod 600 /root/.ssh/*; \
@@ -49,7 +49,7 @@ RUN set -e; \
     # Unfortunately there is a glitch when store result in the default /git directory
     mkdir /protos; \
     cd /protos; \
-    git clone --depth 1 -b $PROTOS_BRANCH $PROTOS_DSN .; \
+    git clone --depth 1 -b $PROTOS_BRANCH -- $PROTOS_DSN .; \
     rm -rf .git
 ```
 
@@ -89,7 +89,10 @@ RUN set -e; \
     rm -rf ../protos_orig
 ```
 
-Чтобы последнее заработало, нужно добавить пакет `grpcio-tools` в `Pipfile`. Также нужно не забыть отредактировать список `SERVICES` в соответствии с нужными сервисами, и в обоих наборах инструкций указать `LABEL maintainer="..."`.
+Чтобы последнее заработало, нужно добавить пакет `grpcio-tools` в `Pipfile`. Также нужно не забыть:
+ 1. Указать название нужной ветки или тэг в `ARG PROTOS_BRANCH` в качестве значения по умолчанию.
+ 1. Отредактировать список `SERVICES` в соответствии с нужными сервисами.
+ 1. В обоих наборах инструкций указать `LABEL maintainer="..."`.
 
 В результате выполнения этих наборов инструкций в директории `/var/app/src/protos` будут находиться поддиректории с именами веб-сервисов, например `exchange_trading`, в которых будут находиться `pb2`- и `.proto`-файлы:
 

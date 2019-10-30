@@ -41,7 +41,7 @@ COPY protos-id_rsa /root/.ssh/id_rsa
 
 ARG PROTOS_HOST=bitbucket.org
 ARG PROTOS_DSN=git@${PROTOS_HOST}:globalforexsystems/protos.git
-ARG PROTOS_BRANCH=master
+ARG PROTOS_BRANCH
 
 RUN set -e; \
     chmod 600 /root/.ssh/*; \
@@ -49,11 +49,11 @@ RUN set -e; \
     # Unfortunately there is a glitch when store result in the default /git directory
     mkdir /protos; \
     cd /protos; \
-    git clone --depth 1 -b $PROTOS_BRANCH $PROTOS_DSN .; \
+    git clone --depth 1 -b $PROTOS_BRANCH -- $PROTOS_DSN .; \
     rm -rf .git
 ```
 
-Для их выполнения понадобится файл `protos-id_rsa` с приватной частью SSH-ключа, дающего доступ к репозиторию `protos`. Также при запуске сборки потребуется указать `--build-arg PROTOS_BRANCH=foo`, чтобы выбрать ветку (версию) репозитория `protos`, которая будет скачана.
+Для их выполнения понадобится файл `protos-id_rsa` с приватной частью SSH-ключа, дающего доступ к репозиторию `protos`. Чтобы выбрать ветку (версию) репозитория `protos`, которая будет скачана, нужно эту ветку указать в качестве значения по умолчанию в инструкции докерфайла: `ARG PROTOS_BRANCH=foo`, либо при запуске сборки указать `--build-arg PROTOS_BRANCH=foo`.
 
 После них нужно разместить инструкции для сборки целевого образа; например, Python-приложения:
 

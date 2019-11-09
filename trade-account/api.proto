@@ -7,10 +7,8 @@ import "protos/common.proto";
 
 service TradeAccountApi {
     rpc CreateAsset (CreateAssetIn) returns (CreateAssetOut);
-    rpc DeleteAssetByTag (DeleteAssetByTagIn) returns (BoolResult);
-    rpc DeleteAssetById (DeleteAssetByIdIn) returns (BoolResult);
-    rpc GetAssetByTag (GetAssetByTagIn) returns (Asset);
-    rpc GetAssetById (GetAssetByIdIn) returns (Asset);
+    rpc DeleteAsset (DeleteAssetIn) returns (BoolResult);
+    rpc GetAsset (GetAssetIn) returns (Asset);
     rpc GetAssets (GetAssetsIn) returns (Assets);
     rpc GetAccount (GetAccountIn) returns (Account);
     rpc GetAccounts (GetAccountsIn) returns (Accounts);
@@ -35,7 +33,7 @@ message GetAccountsIn {
 message AccountSubscriberIn {
     string session_hash = 1;
     repeated int32 user_ids = 2;
-    repeated string asset_tags = 3;
+    repeated string asset_ids = 3;
 }
 
 message AccountId {
@@ -56,11 +54,7 @@ message RecordId {
     int32 id = 1;
 }
 
-message DeleteAssetByTagIn {
-    string tag = 1;
-}
-
-message DeleteAssetByIdIn {
+message DeleteAssetIn {
     int32 id = 1;
 }
 
@@ -73,12 +67,7 @@ message CreateAssetOut {
     int32 id = 1;
 }
 
-message GetAssetByTagIn {
-    string tag = 1;
-    bool include_deleted = 2;
-}
-
-message GetAssetByIdIn {
+message GetAssetIn {
     int32 id = 1;
     bool include_deleted = 2;
 }
@@ -154,8 +143,8 @@ message GetAccountBalanceHistoryOut {
 message FreezeForDealIn {
     int32 deal_id = 1;
     int32 user_id = 2;
-    string payment_asset_tag = 3;
-    string receiver_asset_tag = 4;
+    string payment_asset_id = 3;
+    string receiver_asset_id = 4;
     string amount = 5;
 }
 

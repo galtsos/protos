@@ -33,7 +33,7 @@ message GetAccountsIn {
 message AccountSubscriberIn {
     string session_hash = 1;
     repeated int32 user_ids = 2;
-    repeated string asset_ids = 3;
+    repeated int32 asset_ids = 3;
 }
 
 message AccountId {
@@ -143,8 +143,8 @@ message GetAccountBalanceHistoryOut {
 message FreezeForDealIn {
     int32 deal_id = 1;
     int32 user_id = 2;
-    string payment_asset_id = 3;
-    string receiver_asset_id = 4;
+    int32 payment_asset_id = 3;
+    int32 receiver_asset_id = 4;
     string amount = 5;
 }
 

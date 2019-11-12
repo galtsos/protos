@@ -90,8 +90,8 @@ message GetAccountBalanceHistoryOut {
 message FreezeForDealIn {
     int32 deal_id = 1;
     int32 user_id = 2;
-    string payment_asset_tag = 3;
-    string receiver_asset_tag = 4;
+    int32 payment_asset_id = 3;
+    int32 receiver_asset_id = 4;
     string amount = 5;
 }
 

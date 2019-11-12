@@ -6,12 +6,6 @@ import "protos/trade-account/entities.proto";
 import "protos/common.proto";
 
 service TradeAccountApi {
-    rpc CreateAsset (CreateAssetIn) returns (CreateAssetOut);
-    rpc DeleteAssetByTag (DeleteAssetByTagIn) returns (BoolResult);
-    rpc DeleteAssetById (DeleteAssetByIdIn) returns (BoolResult);
-    rpc GetAssetByTag (GetAssetByTagIn) returns (Asset);
-    rpc GetAssetById (GetAssetByIdIn) returns (Asset);
-    rpc GetAssets (GetAssetsIn) returns (Assets);
     rpc GetAccount (GetAccountIn) returns (Account);
     rpc GetAccounts (GetAccountsIn) returns (Accounts);
     rpc CreateAccount (CreateAccountIn) returns (AccountId);
@@ -54,49 +48,6 @@ message BalanceChangeOut {
 
 message RecordId {
     int32 id = 1;
-}
-
-message DeleteAssetByTagIn {
-    string tag = 1;
-}
-
-message DeleteAssetByIdIn {
-    int32 id = 1;
-}
-
-message CreateAssetIn {
-    string tag = 1;
-    int32 precision = 2;
-}
-
-message CreateAssetOut {
-    int32 id = 1;
-}
-
-message GetAssetByTagIn {
-    string tag = 1;
-    bool include_deleted = 2;
-}
-
-message GetAssetByIdIn {
-    int32 id = 1;
-    bool include_deleted = 2;
-}
-
-message GetAssetsIn {
-    bool include_deleted = 1;
-}
-
-message Assets {
-    repeated Asset assets = 1;
-}
-
-message Asset {
-    int32 id = 1;
-    string tag = 2;
-    int32 precision = 3;
-    google.protobuf.Timestamp creating_time = 4;
-    google.protobuf.Timestamp deleting_time = 5;
 }
 
 message Account {

@@ -11,8 +11,8 @@ service TradeAccountApi {
     rpc GetAssets (GetAssetsIn) returns (Assets)
     rpc GetAccount (GetAccountIn) returns (Account);
     rpc GetAccounts (GetAccountsIn) returns (Accounts);
-    rpc CreateAccount (CreateAccountIn) returns (AccountId);
-    rpc DeleteAccount (AccountId) returns (BoolResult);
+    rpc CreateAccount (CreateAccountIn) returns (RecordId);
+    rpc DeleteAccount (RecordId) returns (BoolResult);
     rpc DepositToAccount (DepositToAccountIn) returns (RecordId);
     rpc WithdrawFromAccount (WithdrawFromAccountIn) returns (RecordId);
     rpc GetAccountBalanceHistory (GetAccountBalanceHistoryIn) returns (GetAccountBalanceHistoryOut);
@@ -37,10 +37,6 @@ message AccountSubscriberIn {
     string session_hash = 1;
     repeated int32 user_ids = 2;
     repeated string asset_tags = 3;
-}
-
-message AccountId {
-    int32 account_id = 1;
 }
 
 message BalanceChangeOut {

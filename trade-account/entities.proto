@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "protos/exchange-info/entities.proto";
 
 message Account {
     int32 id = 1;
@@ -16,10 +15,6 @@ message Account {
 
 message Accounts {
     repeated Account accounts = 1;
-}
-
-message Assets {
-    repeated Asset assets = 1;
 }
 
 message BalanceHistoryRecord {

@@ -28,6 +28,10 @@ message GetAssetsIn {
     bool include_deleted = 1;
 }
 
+message Assets {
+    repeated Asset assets = 1;
+}
+
 message GetAccountsIn {
     int32 user_id = 1;
     bool include_deleted = 2;

@@ -2,10 +2,13 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "protos/exchange-info/entities.proto";
 import "protos/trade-account/entities.proto";
 import "protos/common.proto";
 
 service TradeAccountApi {
+    rpc GetAsset (RecordId) returns (Asset)
+    rpc GetAssets (GetAssetsIn) returns (Assets)
     rpc GetAccount (GetAccountIn) returns (Account);
     rpc GetAccounts (GetAccountsIn) returns (Accounts);
     rpc CreateAccount (CreateAccountIn) returns (AccountId);
@@ -19,6 +22,10 @@ service TradeAccountApi {
     rpc FreezeForDeal (FreezeForDealIn) returns (FreezeForDealOut);
     rpc UnfreezeForDeal (UnfreezeForDealIn) returns (google.protobuf.Empty);
     rpc RegisterDeal (RegisterDealIn) returns (google.protobuf.Empty);
+}
+
+message GetAssetsIn {
+    bool include_deleted = 1;
 }
 
 message GetAccountsIn {

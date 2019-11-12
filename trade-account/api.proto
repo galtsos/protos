@@ -33,7 +33,7 @@ message GetAccountsIn {
 message AccountSubscriberIn {
     string session_hash = 1;
     repeated int32 user_ids = 2;
-    repeated int32 asset_ids = 3;
+    repeated string asset_tags = 3;
 }
 
 message AccountId {

@@ -7,8 +7,8 @@ import "protos/trade-account/entities.proto";
 import "protos/common.proto";
 
 service TradeAccountApi {
-    rpc GetAsset (RecordId) returns (Asset)
-    rpc GetAssets (GetAssetsIn) returns (Assets)
+    rpc GetAsset (RecordId) returns (Asset);
+    rpc GetAssets (GetAssetsIn) returns (Assets);
     rpc GetAccount (GetAccountIn) returns (Account);
     rpc GetAccounts (GetAccountsIn) returns (Accounts);
     rpc CreateAccount (CreateAccountIn) returns (RecordId);

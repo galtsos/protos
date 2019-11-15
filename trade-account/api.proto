@@ -2,18 +2,17 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "protos/exchange-info/entities.proto";
 import "protos/trade-account/entities.proto";
 import "protos/common.proto";
 
 service TradeAccountApi {
-    rpc CreateAsset (CreateAssetIn) returns (CreateAssetOut);
-    rpc DeleteAsset (DeleteAssetIn) returns (BoolResult);
-    rpc GetAsset (GetAssetIn) returns (Asset);
-    rpc GetAssets (GetAssetsIn) returns (Assets);
+    rpc GetAsset (RecordId) returns (Asset)
+    rpc GetAssets (GetAssetsIn) returns (Assets)
     rpc GetAccount (GetAccountIn) returns (Account);
     rpc GetAccounts (GetAccountsIn) returns (Accounts);
-    rpc CreateAccount (CreateAccountIn) returns (AccountId);
-    rpc DeleteAccount (AccountId) returns (BoolResult);
+    rpc CreateAccount (CreateAccountIn) returns (RecordId);
+    rpc DeleteAccount (RecordId) returns (BoolResult);
     rpc DepositToAccount (DepositToAccountIn) returns (RecordId);
     rpc WithdrawFromAccount (WithdrawFromAccountIn) returns (RecordId);
     rpc GetAccountBalanceHistory (GetAccountBalanceHistoryIn) returns (GetAccountBalanceHistoryOut);
@@ -25,6 +24,10 @@ service TradeAccountApi {
     rpc RegisterDeal (RegisterDealIn) returns (google.protobuf.Empty);
 }
 
+message GetAssetsIn {
+    bool include_deleted = 1;
+}
+
 message GetAccountsIn {
     int32 user_id = 1;
     bool include_deleted = 2;
@@ -34,10 +37,6 @@ message AccountSubscriberIn {
     string session_hash = 1;
     repeated int32 user_ids = 2;
     repeated string asset_tags = 3;
-}
-
-message AccountId {
-    int32 account_id = 1;
 }
 
 message BalanceChangeOut {
@@ -52,55 +51,6 @@ message BalanceChangeOut {
 
 message RecordId {
     int32 id = 1;
-}
-
-message DeleteAssetIn {
-    int32 id = 1;
-}
-
-message CreateAssetIn {
-    string tag = 1;
-    int32 precision = 2;
-}
-
-message CreateAssetOut {
-    int32 id = 1;
-}
-
-message GetAssetIn {
-    int32 id = 1;
-    bool include_deleted = 2;
-}
-
-message GetAssetsIn {
-    bool include_deleted = 1;
-}
-
-message Assets {
-    repeated Asset assets = 1;
-}
-
-message Asset {
-    int32 id = 1;
-    string tag = 2;
-    int32 precision = 3;
-    google.protobuf.Timestamp creating_time = 4;
-    google.protobuf.Timestamp deleting_time = 5;
-}
-
-message Account {
-    int32 id = 1;
-    int32 leverage = 2;
-    google.protobuf.Timestamp creating_time = 3;
-    google.protobuf.Timestamp deleting_time = 4;
-    int32 asset_id = 5;
-    int32 user_id = 6;
-    string balance = 7;
-    string free_balance = 8;
-}
-
-message Accounts {
-    repeated Account accounts = 1;
 }
 
 message GetAccountIn {

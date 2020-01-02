@@ -58,8 +58,8 @@ RUN mkdir /root/.ssh
 # A private part of SSH key to access the protos repo
 COPY protos-id_rsa /root/.ssh/id_rsa
 
-ARG PROTOS_HOST=github.com
-ARG PROTOS_DSN=git@${PROTOS_HOST}:galtsos/protos.git
+ARG PROTOS_HOST=bitbucket.org
+ARG PROTOS_DSN=git@${PROTOS_HOST}:globalforexsystems/protos.git
 ARG PROTOS_BRANCH
 
 RUN set -e; \

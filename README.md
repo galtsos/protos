@@ -53,8 +53,7 @@
 ```dockerfile
 FROM alpine/git:1.0.7 AS protos-gitter
 
-ARG PROTOS_HOST=github.com
-ARG PROTOS_DSN=https://${PROTOS_HOST}/galtsos/protos.git
+ARG PROTOS_DSN=https://github.com/galtsos/protos.git
 ARG PROTOS_BRANCH
 
 RUN set -e; \

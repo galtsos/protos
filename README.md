@@ -53,18 +53,10 @@
 ```dockerfile
 FROM alpine/git:1.0.7 AS protos-gitter
 
-RUN mkdir /root/.ssh
-
-# A private part of SSH key to access the protos repo
-COPY protos-id_rsa /root/.ssh/id_rsa
-
-ARG PROTOS_HOST=github.com
-ARG PROTOS_DSN=git@${PROTOS_HOST}:galtsos/protos.git
+ARG PROTOS_DSN=https://github.com/galtsos/protos.git
 ARG PROTOS_BRANCH
 
 RUN set -e; \
-    chmod 600 /root/.ssh/*; \
-    echo -e "Host ${PROTOS_HOST}\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config; \
     # Unfortunately there is a glitch when store result in the default /git directory
     mkdir /protos; \
     cd /protos; \
@@ -72,7 +64,7 @@ RUN set -e; \
     rm -rf .git
 ```
 
-Для их выполнения понадобится файл `protos-id_rsa` с приватной частью SSH-ключа, дающего доступ к репозиторию `protos`. Чтобы скачать необходимую версию протокола (тег/ветку репозитория), нужно указать её в значении аргумента сборки `PROTOS_BRANCH` либо прямо в указанных выше инструкциях (предпочтительно), либо в `docker build` в аргументе `--build-arg`.
+Чтобы скачать необходимую версию протокола (тег/ветку репозитория), нужно указать её в значении аргумента сборки `PROTOS_BRANCH` либо прямо в указанных выше инструкциях (предпочтительно), либо в `docker build` в аргументе `--build-arg`.
 
 Далее нужно разместить инструкции для сборки целевого образа; например, Python-приложения:
 
@@ -137,7 +129,6 @@ docker run -d --rm $IMAGE bash -c 'sleep 10' | xargs -i{} docker cp {}:/var/app/
 
 ```gitignore
 protos
-protos-id_rsa
 ```
 
 В указанных выше инструкциях сборки образа есть комментарий, как использовать локальные `.proto`-файлы вместо хранящихся в репозитории `protos`.
